@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -314,6 +314,47 @@ public abstract class CollectionUtils {
 	}
 
 	/**
+	 * Retrieve the first element of the given Set, using {@link SortedSet#first()}
+	 * or otherwise using the iterator.
+	 * @param set the Set to check (may be {@code null} or empty)
+	 * @return the first element, or {@code null} if none
+	 * @since 5.2.3
+	 * @see SortedSet
+	 * @see LinkedHashMap#keySet()
+	 * @see java.util.LinkedHashSet
+	 */
+	@Nullable
+	public static <T> T firstElement(@Nullable Set<T> set) {
+		if (isEmpty(set)) {
+			return null;
+		}
+		if (set instanceof SortedSet) {
+			return ((SortedSet<T>) set).first();
+		}
+
+		Iterator<T> it = set.iterator();
+		T first = null;
+		if (it.hasNext()) {
+			first = it.next();
+		}
+		return first;
+	}
+
+	/**
+	 * Retrieve the first element of the given List, accessing the zero index.
+	 * @param list the List to check (may be {@code null} or empty)
+	 * @return the first element, or {@code null} if none
+	 * @since 5.2.3
+	 */
+	@Nullable
+	public static <T> T firstElement(@Nullable List<T> list) {
+		if (isEmpty(list)) {
+			return null;
+		}
+		return list.get(0);
+	}
+
+	/**
 	 * Retrieve the last element of the given Set, using {@link SortedSet#last()}
 	 * or otherwise iterating over all elements (assuming a linked set).
 	 * @param set the Set to check (may be {@code null} or empty)
@@ -369,12 +410,12 @@ public abstract class CollectionUtils {
 	}
 
 	/**
-	 * Adapt an enumeration to an iterator.
-	 * @param enumeration the enumeration
-	 * @return the iterator
+	 * Adapt an {@link Enumeration} to an {@link Iterator}.
+	 * @param enumeration the original {@code Enumeration}
+	 * @return the adapted {@code Iterator}
 	 */
-	public static <E> Iterator<E> toIterator(Enumeration<E> enumeration) {
-		return new EnumerationIterator<>(enumeration);
+	public static <E> Iterator<E> toIterator(@Nullable Enumeration<E> enumeration) {
+		return (enumeration != null ? new EnumerationIterator<>(enumeration) : Collections.emptyIterator());
 	}
 
 	/**
@@ -553,7 +594,7 @@ public abstract class CollectionUtils {
 		}
 
 		@Override
-		public boolean equals(Object other) {
+		public boolean equals(@Nullable Object other) {
 			if (this == other) {
 				return true;
 			}

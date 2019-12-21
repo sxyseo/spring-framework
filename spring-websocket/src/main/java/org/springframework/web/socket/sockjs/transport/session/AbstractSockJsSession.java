@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -162,6 +162,7 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 
 	// Message sending
 
+	@Override
 	public final void sendMessage(WebSocketMessage<?> message) throws IOException {
 		Assert.state(!isClosed(), "Cannot send a message when session is closed");
 		Assert.isInstanceOf(TextMessage.class, message, "SockJS supports text messages only");
@@ -323,7 +324,7 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 		try {
 			writeFrameInternal(frame);
 		}
-		catch (Throwable ex) {
+		catch (Exception ex) {
 			logWriteFrameFailure(ex);
 			try {
 				// Force disconnect (so we won't try to send close frame)
@@ -387,7 +388,7 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 					undelivered.remove(0);
 				}
 			}
-			catch (Throwable ex) {
+			catch (Exception ex) {
 				throw new SockJsMessageDeliveryException(this.id, undelivered, ex);
 			}
 		}

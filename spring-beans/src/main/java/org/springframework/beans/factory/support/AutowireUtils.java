@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,7 +51,7 @@ import org.springframework.util.ClassUtils;
  */
 abstract class AutowireUtils {
 
-	private static final Comparator<Executable> EXECUTABLE_COMPARATOR = (e1, e2) -> {
+	public static final Comparator<Executable> EXECUTABLE_COMPARATOR = (e1, e2) -> {
 		int result = Boolean.compare(Modifier.isPublic(e2.getModifiers()), Modifier.isPublic(e1.getModifiers()));
 		return result != 0 ? result : Integer.compare(e2.getParameterCount(), e1.getParameterCount());
 	};
@@ -266,7 +266,7 @@ abstract class AutowireUtils {
 
 
 	/**
-	 * Reflective InvocationHandler for lazy access to the current target object.
+	 * Reflective {@link InvocationHandler} for lazy access to the current target object.
 	 */
 	@SuppressWarnings("serial")
 	private static class ObjectFactoryDelegatingInvocationHandler implements InvocationHandler, Serializable {
